@@ -1247,73 +1247,10 @@ print(deploy_resilience("Roberto Moreno Araneda"))</pre>
             });
         });
 
-        // PDF Export - Simplified and fixed
-        async function exportToPDF() {
-            const btn = document.getElementById('pdfBtn');
-            const original = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span class="hidden sm:inline">GENERATING PDF...</span>';
-            btn.disabled = true;
-
-            try {
-                // Get only the CV content, not the whole page
-                const element = document.getElementById('cv-capture');
-                
-                // Hide mobile menu if open
-                const mobileMenu = document.getElementById('mobileMenu');
-                if (mobileMenu && mobileMenu.classList.contains('open')) {
-                    mobileMenu.classList.remove('open');
-                }
-                
-                // Force all animations to complete state
-                document.querySelectorAll('.animate-on-scroll').forEach(el => {
-                    el.classList.add('animated');
-                    el.style.opacity = '1';
-                    el.style.transform = 'none';
-                });
-                
-                document.querySelectorAll('.skill-progress-fill').forEach(el => {
-                    el.classList.add('animated');
-                    const progress = el.getAttribute('data-progress');
-                    if (progress) {
-                        el.style.width = progress + '%';
-                    }
-                });
-                
-                // Wait for animations to settle
-                await new Promise(resolve => setTimeout(resolve, 300));
-                
-                const opt = {
-                    margin: [5, 5, 5, 5],
-                    filename: 'Roberto_Moreno_Araneda_Resume.pdf',
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: {
-                        scale: 2,
-                        useCORS: true,
-                        letterRendering: true,
-                        backgroundColor: '#0f172a',
-                        logging: false,
-                        scrollY: 0,
-                        scrollX: 0
-                    },
-                    jsPDF: { 
-                        unit: 'mm', 
-                        format: 'a4', 
-                        orientation: 'portrait'
-                    },
-                    pagebreak: { 
-                        mode: ['avoid-all', 'css', 'legacy'],
-                        avoid: ['.dashboard-card', '.timeline-item', '.cert-card', 'h3', 'h4']
-                    }
-                };
-
-                await html2pdf().set(opt).from(element).save();
-                btn.innerHTML = '<i class="fas fa-check"></i> <span class="hidden sm:inline">DOWNLOADED</span>';
-            } catch (e) {
-                btn.innerHTML = '<i class="fas fa-times"></i> ERROR';
-                console.error('PDF generation error:', e);
-            } finally {
-                setTimeout(() => { btn.innerHTML = original; btn.disabled = false; }, 3000);
-            }
+        // PDF Export - Redirect to simple version for better quality
+        function exportToPDF() {
+            // Redirect to simple version which exports PDF better
+            window.location.href = 'cv-simple.html';
         }
     </script>
 </body>
