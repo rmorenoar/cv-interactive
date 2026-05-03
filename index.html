@@ -1247,7 +1247,7 @@ print(deploy_resilience("Roberto Moreno Araneda"))</pre>
             });
         });
 
-        // PDF Export - Optimized version
+        // PDF Export - Simplified and fixed
         async function exportToPDF() {
             const btn = document.getElementById('pdfBtn');
             const original = btn.innerHTML;
@@ -1255,19 +1255,16 @@ print(deploy_resilience("Roberto Moreno Araneda"))</pre>
             btn.disabled = true;
 
             try {
+                // Get only the CV content, not the whole page
                 const element = document.getElementById('cv-capture');
-                
-                // Temporarily switch to print-friendly styles
-                document.body.classList.add('print-mode');
                 
                 // Hide mobile menu if open
                 const mobileMenu = document.getElementById('mobileMenu');
-                const mobileMenuWasOpen = mobileMenu.classList.contains('open');
-                if (mobileMenuWasOpen) {
+                if (mobileMenu && mobileMenu.classList.contains('open')) {
                     mobileMenu.classList.remove('open');
                 }
                 
-                // Force all animations to complete
+                // Force all animations to complete state
                 document.querySelectorAll('.animate-on-scroll').forEach(el => {
                     el.classList.add('animated');
                     el.style.opacity = '1';
@@ -1282,32 +1279,30 @@ print(deploy_resilience("Roberto Moreno Araneda"))</pre>
                     }
                 });
                 
-                // Wait for styles to apply
-                await new Promise(resolve => setTimeout(resolve, 500));
+                // Wait for animations to settle
+                await new Promise(resolve => setTimeout(resolve, 300));
                 
                 const opt = {
-                    margin: [8, 8, 8, 8],
+                    margin: [5, 5, 5, 5],
                     filename: 'Roberto_Moreno_Araneda_Resume.pdf',
-                    image: { type: 'jpeg', quality: 0.95 },
+                    image: { type: 'jpeg', quality: 0.98 },
                     html2canvas: {
-                        scale: 1.5,
+                        scale: 2,
                         useCORS: true,
+                        letterRendering: true,
                         backgroundColor: '#0f172a',
                         logging: false,
-                        width: 900,
-                        windowWidth: 900,
                         scrollY: 0,
                         scrollX: 0
                     },
                     jsPDF: { 
                         unit: 'mm', 
                         format: 'a4', 
-                        orientation: 'portrait',
-                        compress: true
+                        orientation: 'portrait'
                     },
                     pagebreak: { 
-                        mode: ['avoid-all', 'css'],
-                        avoid: ['.dashboard-card', '.timeline-item', '.cert-card']
+                        mode: ['avoid-all', 'css', 'legacy'],
+                        avoid: ['.dashboard-card', '.timeline-item', '.cert-card', 'h3', 'h4']
                     }
                 };
 
@@ -1316,9 +1311,7 @@ print(deploy_resilience("Roberto Moreno Araneda"))</pre>
             } catch (e) {
                 btn.innerHTML = '<i class="fas fa-times"></i> ERROR';
                 console.error('PDF generation error:', e);
-                alert('Error generando PDF. Intenta usar la versión v2.0 (cv_interactive_en.html) para mejor resultado.');
             } finally {
-                document.body.classList.remove('print-mode');
                 setTimeout(() => { btn.innerHTML = original; btn.disabled = false; }, 3000);
             }
         }
