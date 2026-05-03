@@ -1251,19 +1251,10 @@ print(deploy_resilience("Roberto Moreno Araneda"))</pre>
         async function exportToPDF() {
             const btn = document.getElementById('pdfBtn');
             const original = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span class="hidden sm:inline">GENERATING...</span>';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span class="hidden sm:inline">GENERATING PDF...</span>';
             btn.disabled = true;
 
             try {
-                // Use the simpler v2.0 for PDF export
-                const useV2 = confirm('Para mejor calidad de PDF, ¿quieres usar la versión simplificada (v2.0)?\n\nSÍ = Versión simple (mejor PDF)\nNO = Versión actual (con animaciones)');
-                
-                if (useV2) {
-                    // Redirect to v2.0 and trigger export there
-                    window.location.href = 'cv_interactive_en.html';
-                    return;
-                }
-
                 const element = document.getElementById('cv-capture');
                 
                 // Temporarily switch to print-friendly styles
@@ -1292,16 +1283,16 @@ print(deploy_resilience("Roberto Moreno Araneda"))</pre>
                 });
                 
                 // Wait for styles to apply
-                await new Promise(resolve => setTimeout(resolve, 300));
+                await new Promise(resolve => setTimeout(resolve, 500));
                 
                 const opt = {
                     margin: [8, 8, 8, 8],
-                    filename: 'Roberto_Moreno_Araneda_Resume_v3.pdf',
+                    filename: 'Roberto_Moreno_Araneda_Resume.pdf',
                     image: { type: 'jpeg', quality: 0.95 },
                     html2canvas: {
                         scale: 1.5,
                         useCORS: true,
-                        backgroundColor: '#ffffff',
+                        backgroundColor: '#0f172a',
                         logging: false,
                         width: 900,
                         windowWidth: 900,
