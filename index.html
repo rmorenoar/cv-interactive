@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Interactive Resume v3.0 - Roberto Moreno Araneda - Enhanced Edition -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roberto Moreno Araneda — Infrastructure Lead | DevSecOps</title>
+    <meta name="description" content="Interactive Resume of Roberto Moreno Araneda — Infrastructure & Operational Continuity Lead, DevSecOps Architect, AWS Expert.">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Roberto Moreno Araneda — Infrastructure Lead | DevSecOps">
+    <meta property="og:description" content="18+ years experience | AWS Expert managing 76M+ monthly requests | DevOps Engineer | Available July 2026 | Open to New Zealand">
+    <meta property="og:image" content="https://via.placeholder.com/1200x630/232f3e/ff9900?text=Roberto+Moreno+Araneda+-+DevOps+Engineer">
+    <meta property="og:url" content="https://YOUR_USERNAME.github.io/cv/cv_interactive_en.html">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Roberto Moreno Araneda — Infrastructure Lead">
+    <meta name="twitter:description" content="18+ years AWS & DevSecOps experience | Available July 2026 | Open to New Zealand">
+    <meta name="twitter:image" content="https://via.placeholder.com/1200x630/232f3e/ff9900?text=Roberto+Moreno+Araneda">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23232f3e'/><text x='50' y='65' font-size='60' text-anchor='middle' fill='%23ff9900' font-family='Arial, sans-serif' font-weight='bold'>RM</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;800&display=swap');
+
+        :root {
+            --aws-orange: #ff9900;
+            --aws-navy: #232f3e;
+            --aws-bg: #0f172a;
+            --card-bg: #1e293b;
+            --status-green: #22c55e;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--aws-bg);
+            color: #f1f5f9;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mono { font-family: 'JetBrains Mono', monospace; }
+
+        .console-header {
+            background-color: var(--aws-navy);
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.25rem;
+            flex-shrink: 0;
+            border-bottom: 2px solid #ff9900;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .main-layout {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            height: calc(100vh - 48px);
+        }
+
+        .sidebar {
+            width: 240px;
+            background: #161e2d;
+            border-right: 1px solid #334155;
+            display: none;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        @media (min-width: 1024px) {
+            .sidebar { display: flex; }
+        }
+
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+            background: radial-gradient(ellipse at top right, #1e293b 0%, #0f172a 60%);
+        }
+
+        .cv-paper {
+            background-color: var(--aws-bg);
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+        }
+
+        .dashboard-card {
+            background: var(--card-bg);
+            border: 1px solid #334155;
+            border-radius: 8px;
+            transition: border-color 0.25s ease, transform 0.25s ease;
+        }
+
+        .dashboard-card:hover {
+            border-color: var(--aws-orange);
+            transform: translateY(-2px);
+        }
+
+        .status-pill {
+            padding: 3px 12px;
+            border-radius: 99px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--status-green);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--status-green);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%  { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.3); }
+            100%{ opacity: 1; transform: scale(1); }
+        }
+
+        .skill-tag {
+            padding: 3px 10px;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            transition: border-color 0.2s;
+        }
+        .skill-tag:hover { border-color: var(--aws-orange); }
+
+        .timeline-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--aws-orange);
+            flex-shrink: 0;
+            margin-top: 4px;
+            box-shadow: 0 0 6px var(--aws-orange);
+        }
+
+        /* Section titles */
+        .section-title {
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: #64748b;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #1e293b;
+        }
+
+        /* PDF / Print */
+        @media print {
+            .no-print { display: none !important; }
+            .sidebar { display: none !important; }
+            .console-header { display: none !important; }
+            .mobile-menu-overlay { display: none !important; }
+            body { 
+                background: white !important; 
+                color: #1a1a1a !important; 
+            }
+            .main-layout { 
+                height: auto; 
+                overflow: visible;
+                display: block;
+            }
+            .content-area { 
+                padding: 0; 
+                background: white !important; 
+                overflow: visible;
+                width: 100%;
+            }
+            .cv-paper {
+                max-width: none;
+                border: none;
+                box-shadow: none;
+                padding: 8mm;
+                background: white !important;
+                color: #1a1a1a !important;
+            }
+            .dashboard-card {
+                background: white !important;
+                border: 1px solid #d1d5db !important;
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+            .text-slate-300, .text-slate-400, .text-slate-500 { color: #4b5563 !important; }
+            .text-white { color: #1a1a1a !important; }
+            .text-orange-500, .text-orange-400 { color: #ea580c !important; }
+            .text-green-400, .text-green-500 { color: #16a34a !important; }
+            .text-blue-400, .text-blue-500 { color: #2563eb !important; }
+            .text-yellow-400, .text-yellow-500 { color: #ca8a04 !important; }
+            .text-purple-400, .text-purple-500 { color: #9333ea !important; }
+            .text-red-400 { color: #dc2626 !important; }
+            .bg-slate-800, .bg-slate-900, .bg-black\/40, .bg-black\/50, .bg-black\/60 { 
+                background: #f9fafb !important; 
+            }
+            .border-slate-700, .border-slate-800 { border-color: #d1d5db !important; }
+            .skill-tag { 
+                background: white !important; 
+                border-color: #d1d5db !important; 
+                color: #1a1a1a !important; 
+            }
+            .timeline-line {
+                background: linear-gradient(to bottom, #ea580c 0%, #6b7280 100%) !important;
+            }
+            .timeline-dot {
+                background: #ea580c !important;
+                border-color: white !important;
+            }
+            .animate-on-scroll {
+                opacity: 1 !important;
+                animation: none !important;
+            }
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+        
+        /* Print mode for PDF export */
+        body.print-mode {
+            background: white !important;
+            color: #1a1a1a !important;
+        }
+        body.print-mode .sidebar {
+            display: none !important;
+        }
+        body.print-mode .console-header {
+            display: none !important;
+        }
+        body.print-mode .mobile-menu-overlay {
+            display: none !important;
+        }
+        body.print-mode .main-layout {
+            display: block !important;
+        }
+        body.print-mode .content-area {
+            background: white !important;
+            padding: 0 !important;
+            width: 100% !important;
+        }
+        body.print-mode .cv-paper {
+            background: white !important;
+            color: #1a1a1a !important;
+            border: none !important;
+            box-shadow: none !important;
+            max-width: 100% !important;
+        }
+        body.print-mode .dashboard-card {
+            background: white !important;
+            border: 1px solid #d1d5db !important;
+            page-break-inside: avoid;
+        }
+        body.print-mode .text-slate-300,
+        body.print-mode .text-slate-400,
+        body.print-mode .text-slate-500 { color: #4b5563 !important; }
+        body.print-mode .text-white { color: #1a1a1a !important; }
+        body.print-mode .text-orange-500,
+        body.print-mode .text-orange-400 { color: #ea580c !important; }
+        body.print-mode .text-green-400,
+        body.print-mode .text-green-500 { color: #16a34a !important; }
+        body.print-mode .text-blue-400,
+        body.print-mode .text-blue-500 { color: #2563eb !important; }
+        body.print-mode .text-yellow-400,
+        body.print-mode .text-yellow-500 { color: #ca8a04 !important; }
+        body.print-mode .text-purple-400,
+        body.print-mode .text-purple-500 { color: #9333ea !important; }
+        body.print-mode .text-red-400 { color: #dc2626 !important; }
+        body.print-mode .bg-slate-800,
+        body.print-mode .bg-slate-900,
+        body.print-mode .bg-slate-800\/60,
+        body.print-mode .bg-slate-800\/40,
+        body.print-mode .bg-slate-900\/60,
+        body.print-mode .bg-black\/40,
+        body.print-mode .bg-black\/50,
+        body.print-mode .bg-black\/60 { 
+            background: #f9fafb !important; 
+        }
+        body.print-mode .border-slate-700,
+        body.print-mode .border-slate-800 { border-color: #d1d5db !important; }
+        body.print-mode .skill-tag { 
+            background: white !important; 
+            border-color: #d1d5db !important; 
+            color: #1a1a1a !important; 
+        }
+        body.print-mode .timeline-line {
+            background: linear-gradient(to bottom, #ea580c 0%, #6b7280 100%) !important;
+        }
+        body.print-mode .timeline-dot {
+            background: #ea580c !important;
+            border-color: white !important;
+            box-shadow: 0 0 0 3px #ea580c33 !important;
+        }
+        body.print-mode .skill-progress-bar {
+            background: #e5e7eb !important;
+        }
+        body.print-mode .skill-progress-fill {
+            background: linear-gradient(90deg, #ea580c 0%, #dc2626 100%) !important;
+        }
+        body.print-mode .cert-card {
+            background: white !important;
+            border: 1px solid #d1d5db !important;
+        }
+        body.print-mode .cert-icon.aws {
+            background: linear-gradient(135deg, #ea580c 0%, #dc2626 100%) !important;
+        }
+        body.print-mode .cert-icon.nzqa {
+            background: linear-gradient(135deg, #16a34a 0%, #15803d 100%) !important;
+        }
+        body.print-mode .cert-icon.ielts {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+        }
+        body.print-mode .status-pill {
+            border: 1px solid #d1d5db !important;
+        }
+        body.print-mode .pulse-dot {
+            background: #16a34a !important;
+        }
+        /* Hide animations in print mode */
+        body.print-mode .animate-on-scroll {
+            opacity: 1 !important;
+            animation: none !important;
+        }
+        body.print-mode * {
+            animation: none !important;
+            transition: none !important;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #ff9900; }
+
+        /* Scroll Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+        }
+
+        .animate-on-scroll.animated {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        /* Timeline Styles */
+        .timeline-container {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 15px;
+            top: 10px;
+            bottom: 10px;
+            width: 3px;
+            background: linear-gradient(to bottom, #ff9900 0%, #232f3e 100%);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -33px;
+            top: 8px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #ff9900;
+            border: 3px solid #0f172a;
+            box-shadow: 0 0 0 3px #ff990033, 0 0 12px #ff9900;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover .timeline-dot {
+            transform: scale(1.3);
+            box-shadow: 0 0 0 6px #ff990033, 0 0 20px #ff9900;
+        }
+
+        /* Skill Progress Bars */
+        .skill-progress-container {
+            margin-bottom: 1rem;
+        }
+
+        .skill-progress-bar {
+            height: 8px;
+            background: #1e293b;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .skill-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff9900 0%, #ff6b00 100%);
+            border-radius: 4px;
+            transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .skill-progress-fill.animated {
+            width: var(--progress);
+        }
+
+        /* Certification Cards */
+        .cert-card {
+            background: var(--card-bg);
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 1.25rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+
+        .cert-card:hover {
+            border-color: #ff9900;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 153, 0, 0.15);
+        }
+
+        .cert-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .cert-icon.aws {
+            background: linear-gradient(135deg, #ff9900 0%, #ff6b00 100%);
+            color: white;
+        }
+
+        .cert-icon.nzqa {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .cert-icon.ielts {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+        }
+
+        .cert-info {
+            flex: 1;
+        }
+
+        .cert-progress {
+            height: 6px;
+            background: #1e293b;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .cert-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+            border-radius: 3px;
+            transition: width 1s ease-out;
+        }
+
+        /* Enhanced hover effects */
+        .dashboard-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .dashboard-card:hover {
+            border-color: var(--aws-orange);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(255, 153, 0, 0.2);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-overlay {
+            display: none;
+            position: fixed;
+            top: 48px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(8px);
+            z-index: 90;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .mobile-menu-overlay.open {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .mobile-menu-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .mobile-menu-nav a {
+            padding: 1rem;
+            background: var(--card-bg);
+            border: 1px solid #334155;
+            border-radius: 8px;
+            color: #f1f5f9;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-nav a:hover {
+            border-color: #ff9900;
+            background: #1e293b;
+        }
+
+        /* Mobile nav */
+        .mobile-nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 4px;
+            padding: 4px 8px;
+            cursor: pointer;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+        @media (min-width: 1024px) { .mobile-nav-btn { display: none; } }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="console-header no-print">
+        <div class="flex items-center gap-3">
+            <button onclick="toggleMobileMenu()" class="mobile-nav-btn lg:hidden">
+                <i class="fas fa-bars"></i>
+            </button>
+            <i class="fab fa-aws text-2xl text-white"></i>
+            <span class="text-white font-bold text-sm hidden sm:block">AWS Management Console</span>
+            <span class="text-slate-500 hidden sm:block">|</span>
+            <span class="text-orange-400 text-xs font-mono hidden sm:block">roberto-moreno-araneda</span>
+        </div>
+        <div class="flex items-center gap-3">
+            <div class="hidden md:flex items-center gap-2 text-xs font-semibold bg-slate-800 border border-slate-700 px-3 py-1.5 rounded">
+                <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                <span class="text-slate-300">sa-east-1 (Santiago)</span>
+            </div>
+            <a href="https://www.linkedin.com/in/roberto-moreno-araneda-6ab74a73" target="_blank"
+               class="hidden sm:flex items-center gap-2 bg-slate-800 border border-slate-700 hover:border-blue-500 text-slate-300 hover:text-blue-400 px-3 py-1.5 rounded text-xs transition-all">
+                <i class="fab fa-linkedin"></i> LinkedIn
+            </a>
+            <button id="pdfBtn" onclick="exportToPDF()"
+                    class="bg-[#ff9900] hover:bg-[#ec8b00] text-black font-bold px-4 py-1.5 rounded text-xs transition-all flex items-center gap-2">
+                <i class="fas fa-file-export"></i>
+                <span class="hidden sm:inline">EXPORT RESUME</span>
+                <span class="sm:hidden">PDF</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobileMenu" class="mobile-menu-overlay">
+        <nav class="mobile-menu-nav">
+            <a href="#resumen" onclick="toggleMobileMenu()">
+                <i class="fas fa-user w-6 text-orange-500"></i>
+                <span>Summary</span>
+            </a>
+            <a href="#metricas" onclick="toggleMobileMenu()">
+                <i class="fas fa-chart-bar w-6 text-blue-500"></i>
+                <span>Metrics</span>
+            </a>
+            <a href="#certificaciones" onclick="toggleMobileMenu()">
+                <i class="fas fa-certificate w-6 text-green-500"></i>
+                <span>Certifications</span>
+            </a>
+            <a href="#experiencia" onclick="toggleMobileMenu()">
+                <i class="fas fa-briefcase w-6 text-purple-500"></i>
+                <span>Experience</span>
+            </a>
+            <a href="#habilidades" onclick="toggleMobileMenu()">
+                <i class="fas fa-microchip w-6 text-yellow-500"></i>
+                <span>Skills</span>
+            </a>
+            <a href="#formacion" onclick="toggleMobileMenu()">
+                <i class="fas fa-graduation-cap w-6 text-pink-500"></i>
+                <span>Education</span>
+            </a>
+        </nav>
+    </div>
+
+    <div class="main-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar p-4 no-print">
+            <div class="mb-5">
+                <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-3">Navigation</p>
+                <nav class="space-y-1 text-xs">
+                    <a href="#resumen" class="flex items-center gap-3 p-2 text-slate-300 hover:bg-slate-800 hover:text-orange-400 rounded cursor-pointer transition-colors">
+                        <i class="fas fa-user w-4 text-orange-500 text-center"></i> Summary
+                    </a>
+                    <a href="#metricas" class="flex items-center gap-3 p-2 text-slate-300 hover:bg-slate-800 hover:text-orange-400 rounded cursor-pointer transition-colors">
+                        <i class="fas fa-chart-bar w-4 text-blue-500 text-center"></i> Metrics
+                    </a>
+                    <a href="#certificaciones" class="flex items-center gap-3 p-2 text-slate-300 hover:bg-slate-800 hover:text-orange-400 rounded cursor-pointer transition-colors">
+                        <i class="fas fa-certificate w-4 text-green-500 text-center"></i> Certifications
+                    </a>
+                    <a href="#experiencia" class="flex items-center gap-3 p-2 text-slate-300 hover:bg-slate-800 hover:text-orange-400 rounded cursor-pointer transition-colors">
+                        <i class="fas fa-briefcase w-4 text-purple-500 text-center"></i> Experience
+                    </a>
+                    <a href="#habilidades" class="flex items-center gap-3 p-2 text-slate-300 hover:bg-slate-800 hover:text-orange-400 rounded cursor-pointer transition-colors">
+                        <i class="fas fa-microchip w-4 text-yellow-500 text-center"></i> Skills
+                    </a>
+                    <a href="#formacion" class="flex items-center gap-3 p-2 text-slate-300 hover:bg-slate-800 hover:text-orange-400 rounded cursor-pointer transition-colors">
+                        <i class="fas fa-graduation-cap w-4 text-pink-500 text-center"></i> Education
+                    </a>
+                </nav>
+            </div>
+
+            <div class="mb-5">
+                <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-3">System Status</p>
+                <div class="space-y-2 text-[10px]">
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-400">Lambda Functions</span>
+                        <span class="text-blue-400 font-bold mono">1,824</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-400">Active APIs</span>
+                        <span class="text-green-400 font-bold mono">82</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-400">RPA Bots</span>
+                        <span class="text-orange-400 font-bold mono">18/18</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-400">Current RTO</span>
+                        <span class="text-green-400 font-bold mono">&lt;4h</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-auto">
+                <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-2">CloudWatch Logs</p>
+                <div class="p-3 bg-black/60 rounded border border-slate-800 mono text-[9px] text-green-400 max-h-48 overflow-y-auto">
+                    <div id="log-box">
+                        <div class="mb-1">&gt; Initializing system...</div>
+                        <div class="mb-1">&gt; Loading profile: RM...</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- CV Paper Container -->
+        <main class="content-area">
+            <div id="cv-capture" class="cv-paper">
+
+                <!-- PROFILE HEADER -->
+                <div id="resumen" class="flex flex-col md:flex-row justify-between items-start border-b border-slate-800 pb-8 mb-8 gap-6">
+                    <div class="flex gap-6 items-center">
+                        <div class="w-20 h-20 bg-gradient-to-br from-slate-700 to-slate-900 border-2 border-orange-500 rounded-xl flex items-center justify-center shadow-2xl flex-shrink-0">
+                            <span class="text-3xl font-black text-white">RM</span>
+                        </div>
+                        <div>
+                            <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight">Roberto Moreno Araneda</h1>
+                            <p class="text-orange-500 font-bold uppercase tracking-widest text-[10px] mt-1.5">Infrastructure Lead · DevSecOps Architect · RPA Specialist</p>
+                            <div class="flex flex-wrap gap-x-5 gap-y-1.5 mt-3 text-[10.5px] text-slate-400">
+                                <a href="mailto:roberto.moreno.a@gmail.com" class="flex items-center gap-1.5 hover:text-orange-400 transition-colors">
+                                    <i class="fas fa-envelope text-orange-500"></i> roberto.moreno.a@gmail.com
+                                </a>
+                                <a href="tel:+56978387906" class="flex items-center gap-1.5 hover:text-orange-400 transition-colors">
+                                    <i class="fas fa-phone text-orange-500"></i> +56 9 7838 7906
+                                </a>
+                                <a href="https://www.linkedin.com/in/roberto-moreno-araneda-6ab74a73" target="_blank" class="flex items-center gap-1.5 hover:text-blue-400 transition-colors">
+                                    <i class="fab fa-linkedin text-blue-500"></i> linkedin.com/in/roberto-moreno-araneda-6ab74a73
+                                </a>
+                                <span class="flex items-center gap-1.5">
+                                    <i class="fas fa-map-marker-alt text-orange-500"></i> Santiago, Chile
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-start md:items-end gap-2 flex-shrink-0">
+                        <div class="status-pill bg-green-500/10 text-green-400 border border-green-500/30">
+                            <div class="pulse-dot"></div> Available: July 2026
+                        </div>
+                        <div class="status-pill bg-blue-500/10 text-blue-400 border border-blue-500/30 text-[10px]">
+                            <i class="fas fa-plane text-xs"></i> Open to Relocation · New Zealand
+                        </div>
+                        <div class="status-pill bg-yellow-500/10 text-yellow-400 border border-yellow-500/30 text-[10px]">
+                            <i class="fas fa-language text-xs"></i> IELTS Target: 6.5
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-slate-900/60 border border-orange-500/20 rounded-lg text-[11.5px] text-slate-300 leading-relaxed mb-7">
+                    <i class="fas fa-quote-left text-orange-500/30 mr-2 text-lg"></i>
+                    Industrial Execution Engineer with <strong class="text-white">18+ years</strong> of experience in technical leadership, process resilience, and digital transformation. Specialist in massive-scale AWS governance — managing multi-region and multi-OU environments with <strong class="text-orange-400">1,800+ Lambda functions</strong> and <strong class="text-orange-400">82 APIs (76M+ requests/month)</strong>. Expert in DevSecOps, Generative AI, and RPA automation for critical public services.
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                    <!-- LEFT COLUMN -->
+                    <div class="md:col-span-4 space-y-5">
+
+                        <!-- Metrics -->
+                        <div id="metricas" class="dashboard-card p-5 animate-on-scroll">
+                            <h3 class="section-title"><i class="fas fa-chart-line text-orange-500"></i> Impact Metrics</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="flex justify-between text-[10px] mb-1.5 font-bold">
+                                        <span class="text-slate-300">Lambda Functions</span>
+                                        <span class="text-blue-400 mono">1,824</span>
+                                    </div>
+                                    <div class="h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                                        <div class="h-full bg-blue-500 rounded-full" style="width:92%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-[10px] mb-1.5 font-bold">
+                                        <span class="text-slate-300">API Traffic / month</span>
+                                        <span class="text-green-400 mono">76M+</span>
+                                    </div>
+                                    <div class="h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                                        <div class="h-full bg-green-500 rounded-full" style="width:96%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-[10px] mb-1.5 font-bold">
+                                        <span class="text-slate-300">Hours saved / year</span>
+                                        <span class="text-orange-400 mono">55,000+</span>
+                                    </div>
+                                    <div class="h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                                        <div class="h-full bg-orange-500 rounded-full" style="width:88%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-[10px] mb-1.5 font-bold">
+                                        <span class="text-slate-300">Annual transactions</span>
+                                        <span class="text-purple-400 mono">900K+</span>
+                                    </div>
+                                    <div class="h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                                        <div class="h-full bg-purple-500 rounded-full" style="width:85%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-[10px] mb-1.5 font-bold">
+                                        <span class="text-slate-300">RTO reduced</span>
+                                        <span class="text-red-400 mono">24h &rarr; &lt;4h</span>
+                                    </div>
+                                    <div class="h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                                        <div class="h-full bg-red-500 rounded-full" style="width:83%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Certifications -->
+                        <div id="certificaciones" class="dashboard-card p-5 animate-on-scroll">
+                            <h3 class="section-title"><i class="fas fa-certificate text-green-500"></i> Certifications & Training</h3>
+                            
+                            <!-- Completed -->
+                            <div class="cert-card">
+                                <div class="cert-icon nzqa">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </div>
+                                <div class="cert-info">
+                                    <h4 class="text-[11px] font-bold text-white">NZQA Level 7 (IQA)</h4>
+                                    <p class="text-[9px] text-slate-400 mt-0.5">New Zealand Qualifications Authority</p>
+                                    <div class="flex items-center gap-2 mt-1">
+                                        <span class="text-[9px] text-green-400 font-bold">✓ COMPLETED</span>
+                                        <span class="text-[9px] text-slate-500">2026</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- In Progress - AWS -->
+                            <div class="cert-card">
+                                <div class="cert-icon aws">
+                                    <i class="fab fa-aws"></i>
+                                </div>
+                                <div class="cert-info">
+                                    <h4 class="text-[11px] font-bold text-white">AWS Solutions Architect Associate</h4>
+                                    <p class="text-[9px] text-slate-400 mt-0.5">Amazon Web Services</p>
+                                    <div class="cert-progress">
+                                        <div class="cert-progress-fill skill-progress-fill" data-progress="65" style="--progress: 65%"></div>
+                                    </div>
+                                    <div class="flex items-center justify-between mt-1">
+                                        <span class="text-[9px] text-yellow-400 font-bold">⏳ IN PROGRESS</span>
+                                        <span class="text-[9px] text-slate-500">Expected: June 2026</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- In Progress - IELTS -->
+                            <div class="cert-card">
+                                <div class="cert-icon ielts">
+                                    <i class="fas fa-language"></i>
+                                </div>
+                                <div class="cert-info">
+                                    <h4 class="text-[11px] font-bold text-white">IELTS Academic</h4>
+                                    <p class="text-[9px] text-slate-400 mt-0.5">Target Score: 6.5-7.0</p>
+                                    <div class="cert-progress">
+                                        <div class="cert-progress-fill skill-progress-fill" data-progress="40" style="--progress: 40%; background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);"></div>
+                                    </div>
+                                    <div class="flex items-center justify-between mt-1">
+                                        <span class="text-[9px] text-blue-400 font-bold">📚 PREPARING</span>
+                                        <span class="text-[9px] text-slate-500">Expected: June 2026</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Skills -->
+                        <div id="habilidades" class="dashboard-card p-5 animate-on-scroll">
+                            <h3 class="section-title"><i class="fas fa-microchip text-purple-500"></i> Cloud &amp; DevSecOps</h3>
+                            
+                            <!-- AWS Control Tower -->
+                            <div class="skill-progress-container">
+                                <div class="flex justify-between text-[10px] mb-1.5">
+                                    <span class="text-slate-300 font-bold">AWS Control Tower</span>
+                                    <span class="text-orange-400 mono">Expert · 5+ years</span>
+                                </div>
+                                <div class="skill-progress-bar">
+                                    <div class="skill-progress-fill" data-progress="95" style="--progress: 95%"></div>
+                                </div>
+                            </div>
+
+                            <!-- DevSecOps -->
+                            <div class="skill-progress-container">
+                                <div class="flex justify-between text-[10px] mb-1.5">
+                                    <span class="text-slate-300 font-bold">DevSecOps & AWS WAF</span>
+                                    <span class="text-blue-400 mono">Expert · 6+ years</span>
+                                </div>
+                                <div class="skill-progress-bar">
+                                    <div class="skill-progress-fill" data-progress="92" style="--progress: 92%"></div>
+                                </div>
+                            </div>
+
+                            <!-- Lambda & API Gateway -->
+                            <div class="skill-progress-container">
+                                <div class="flex justify-between text-[10px] mb-1.5">
+                                    <span class="text-slate-300 font-bold">Lambda & API Gateway</span>
+                                    <span class="text-green-400 mono">Expert · 5+ years</span>
+                                </div>
+                                <div class="skill-progress-bar">
+                                    <div class="skill-progress-fill" data-progress="90" style="--progress: 90%"></div>
+                                </div>
+                            </div>
+
+                            <!-- Terraform & IaC -->
+                            <div class="skill-progress-container">
+                                <div class="flex justify-between text-[10px] mb-1.5">
+                                    <span class="text-slate-300 font-bold">Terraform & AWS SAM</span>
+                                    <span class="text-yellow-400 mono">Advanced · 4+ years</span>
+                                </div>
+                                <div class="skill-progress-bar">
+                                    <div class="skill-progress-fill" data-progress="85" style="--progress: 85%"></div>
+                                </div>
+                            </div>
+
+                            <!-- GenAI -->
+                            <div class="skill-progress-container">
+                                <div class="flex justify-between text-[10px] mb-1.5">
+                                    <span class="text-slate-300 font-bold">Bedrock GenAI & Lex V2</span>
+                                    <span class="text-purple-400 mono">Advanced · 2+ years</span>
+                                </div>
+                                <div class="skill-progress-bar">
+                                    <div class="skill-progress-fill" data-progress="80" style="--progress: 80%"></div>
+                                </div>
+                            </div>
+
+                            <!-- Python -->
+                            <div class="skill-progress-container">
+                                <div class="flex justify-between text-[10px] mb-1.5">
+                                    <span class="text-slate-300 font-bold">Python & Boto3</span>
+                                    <span class="text-red-400 mono">Expert · 8+ years</span>
+                                </div>
+                                <div class="skill-progress-bar">
+                                    <div class="skill-progress-fill" data-progress="93" style="--progress: 93%"></div>
+                                </div>
+                            </div>
+
+                            <h3 class="section-title mt-4"><i class="fas fa-tools text-blue-500"></i> ITSM &amp; Monitoring</h3>
+                            <div class="flex flex-wrap gap-1.5 mb-4">
+                                <span class="skill-tag">PRTG</span>
+                                <span class="skill-tag">GLPI</span>
+                                <span class="skill-tag">osTicket</span>
+                                <span class="skill-tag">AWS SSM</span>
+                                <span class="skill-tag">Jinja2</span>
+                            </div>
+                            <h3 class="section-title mt-3"><i class="fas fa-cogs text-green-500"></i> Management &amp; Quality</h3>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="skill-tag">ISO 9001</span>
+                                <span class="skill-tag">SDLC</span>
+                                <span class="skill-tag">DRP / BCP</span>
+                                <span class="skill-tag">PHP / MySQL</span>
+                                <span class="skill-tag">Joomla</span>
+                            </div>
+                        </div>
+
+                        <!-- Education & Languages -->
+                        <div id="formacion" class="dashboard-card p-5 animate-on-scroll">
+                            <h3 class="section-title"><i class="fas fa-graduation-cap text-yellow-500"></i> Education</h3>
+                            <div class="space-y-4 text-[11px]">
+                                <div class="flex gap-3">
+                                    <i class="fas fa-university text-slate-500 mt-0.5 flex-shrink-0"></i>
+                                    <div>
+                                        <div class="font-bold text-white">Industrial Execution Engineer</div>
+                                        <div class="text-slate-400">IPCC, Chile</div>
+                                    </div>
+                                </div>
+                                <div class="flex gap-3">
+                                    <i class="fas fa-globe text-orange-500 mt-0.5 flex-shrink-0"></i>
+                                    <div>
+                                        <div class="font-bold text-white">NZQA (IQA) — New Zealand</div>
+                                        <div class="text-green-400 font-black text-[10px] uppercase tracking-wide">Level 7 NZQF · In Progress</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h3 class="section-title mt-5"><i class="fas fa-language text-blue-400"></i> Languages</h3>
+                            <div class="space-y-2 text-[11px]">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-slate-300">Spanish</span>
+                                    <span class="text-green-400 font-bold text-[10px]">Native</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-slate-300">English</span>
+                                    <span class="text-yellow-400 font-bold text-[10px]">Intermediate · IELTS 6.5 target</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- RIGHT COLUMN -->
+                    <div id="experiencia" class="md:col-span-8 space-y-5">
+
+                        <h3 class="section-title text-[11px]"><i class="fas fa-briefcase text-green-500"></i> Professional Experience</h3>
+
+                        <!-- Timeline Container -->
+                        <div class="timeline-container">
+                            <div class="timeline-line"></div>
+
+                            <!-- Exp 1 -->
+                            <div class="timeline-item animate-on-scroll">
+                                <div class="timeline-dot"></div>
+                                <div class="dashboard-card overflow-hidden">
+                                    <div class="bg-slate-800/60 px-5 py-3 border-b border-slate-700 flex flex-wrap justify-between items-start gap-2">
+                                        <div>
+                                            <h4 class="text-[13px] font-black text-white">Infrastructure &amp; Operational Continuity Lead</h4>
+                                            <div class="text-[10px] mono text-slate-400 mt-0.5">Ministry of Health — COMPIN &nbsp;·&nbsp; Sep 2024 – Present</div>
+                                        </div>
+                                        <span class="status-pill bg-green-500/10 text-green-400 border border-green-500/20 text-[9px]">
+                                            <div class="pulse-dot" style="width:6px;height:6px"></div> ACTIVE
+                                        </span>
+                                    </div>
+                                    <ul class="p-5 space-y-2.5 text-[11.5px] text-slate-300">
+                                        <li class="flex gap-2.5"><i class="fas fa-caret-right text-orange-500 mt-0.5 flex-shrink-0"></i><span>Multi-region and multi-OU AWS governance with <strong class="text-white">76M+ monthly requests</strong> under Control Tower and SCPs.</span></li>
+                                        <li class="flex gap-2.5"><i class="fas fa-caret-right text-orange-500 mt-0.5 flex-shrink-0"></i><span>Integration of PRTG, GLPI, and osTicket achieving <strong class="text-white">25% improvement</strong> in incident response times.</span></li>
+                                        <li class="flex gap-2.5"><i class="fas fa-caret-right text-orange-500 mt-0.5 flex-shrink-0"></i><span>Automated auditing and data masking across <strong class="text-white">90+ repositories</strong> via AWS SSM.</span></li>
+                                        <li class="flex gap-2.5"><i class="fas fa-caret-right text-orange-500 mt-0.5 flex-shrink-0"></i><span>DRP framework (SAM/Boto3) reducing RTO from <strong class="text-white">24h to &lt;4h</strong> for platforms with 19M+ weekly transactions.</span></li>
+                                        <li class="flex gap-2.5"><i class="fas fa-caret-right text-orange-500 mt-0.5 flex-shrink-0"></i><span>GenAI orchestration with <strong class="text-white">Amazon Bedrock and Lex V2</strong> + 18 Python RPA bots saving <strong class="text-white">55,000+ hours/year</strong>.</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Exp 2 -->
+                            <div class="timeline-item animate-on-scroll">
+                                <div class="timeline-dot"></div>
+                                <div class="dashboard-card overflow-hidden">
+                                    <div class="bg-slate-800/40 px-5 py-3 border-b border-slate-700">
+                                        <h4 class="text-[13px] font-black text-white">National Platform Coordinator &amp; Technical Specialist</h4>
+                                        <div class="text-[10px] mono text-slate-400 mt-0.5">Ministry of Health — COMPIN &nbsp;·&nbsp; Jan 2018 – Dec 2024</div>
+                                    </div>
+                                    <ul class="p-5 space-y-2.5 text-[11.5px] text-slate-300">
+                                        <li class="flex gap-2.5"><i class="fas fa-caret-right text-blue-500 mt-0.5 flex-shrink-0"></i><span>Coordinated national delivery and deployment of critical platforms (COMPIN-ISAPRE / SANNA Law) with <strong class="text-white">900,000+ annual transactions</strong>.</span></li>
+                                        <li class="flex gap-2.5"><i class="fas fa-caret-right text-blue-500 mt-0.5 flex-shrink-0"></i><span>Business requirements definition, user stories, and vendor oversight throughout the entire SDLC.</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Exp 3 -->
+                            <div class="timeline-item animate-on-scroll">
+                                <div class="timeline-dot"></div>
+                                <div class="dashboard-card overflow-hidden">
+                                    <div class="bg-slate-800/40 px-5 py-3 border-b border-slate-700">
+                                        <h4 class="text-[13px] font-black text-white">Process Management & Quality Analyst</h4>
+                                        <div class="text-[10px] mono text-slate-400 mt-0.5">Ministry of Health — COMPIN &nbsp;·&nbsp; Jan 2017 – Dec 2017</div>
+                                    </div>
+                                    <div class="px-5 py-3 text-[11.5px] text-slate-400">
+                                        Process mapping and documentation for the QMS, developing risk matrices and indicators aligned with <strong class="text-white">ISO 9001</strong>.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Previous experiences -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="dashboard-card p-4">
+                                <div class="text-[9px] font-black text-slate-500 uppercase tracking-wide mb-1">Management Systems Professional</div>
+                                <div class="text-[10px] text-orange-400 font-bold mb-1.5">SMAPA &nbsp;·&nbsp; Jun 2013 – Aug 2016</div>
+                                <div class="text-[10.5px] text-slate-400">Quality management for water infrastructure; regional project coordination and continuous improvement.</div>
+                            </div>
+                            <div class="dashboard-card p-4">
+                                <div class="text-[9px] font-black text-yellow-500/80 uppercase tracking-wide mb-1">Elected Municipal Councilor</div>
+                                <div class="text-[10px] text-yellow-400 font-bold mb-1.5">Estación Central &nbsp;·&nbsp; 2008 – 2012</div>
+                                <div class="text-[10.5px] text-slate-400">Budget oversight and collaborative interdepartmental governance.</div>
+                            </div>
+                            <div class="dashboard-card p-4">
+                                <div class="text-[9px] font-black text-slate-500 uppercase tracking-wide mb-1">Infrastructure &amp; Services Advisor</div>
+                                <div class="text-[10px] text-orange-400 font-bold mb-1.5">Ministry of Interior &nbsp;·&nbsp; Jan 2009 – Apr 2010</div>
+                                <div class="text-[10.5px] text-slate-400">External services supervision, infrastructure maintenance, and financial process systematization.</div>
+                            </div>
+                            <div class="dashboard-card p-4">
+                                <div class="text-[9px] font-black text-slate-500 uppercase tracking-wide mb-1">Assistant Engineer — ISO 9001</div>
+                                <div class="text-[10px] text-orange-400 font-bold mb-1.5">Pérez &amp; Jacard S.A. &nbsp;·&nbsp; Apr 2006 – Feb 2008</div>
+                                <div class="text-[10.5px] text-slate-400">Responsible for ISO 9001:2000 certification (Nov 2007); legal compliance plans and documentary frameworks.</div>
+                            </div>
+                            <div class="dashboard-card p-4">
+                                <div class="text-[9px] font-black text-slate-500 uppercase tracking-wide mb-1">Hosting Reseller &amp; Web Developer</div>
+                                <div class="text-[10px] text-orange-400 font-bold mb-1.5">Freelance &nbsp;·&nbsp; Jun 2010 – Dec 2011</div>
+                                <div class="text-[10.5px] text-slate-400">Design, development, and administration of websites (PHP, MySQL, Joomla) for professional domains.</div>
+                            </div>
+                            <div class="dashboard-card p-4">
+                                <div class="text-[9px] font-black text-slate-500 uppercase tracking-wide mb-1">Assistant Engineer — Environmental Hygiene</div>
+                                <div class="text-[10px] text-orange-400 font-bold mb-1.5">Néstor Santander Consultant &nbsp;·&nbsp; 2010 – 2011</div>
+                                <div class="text-[10.5px] text-slate-400">EIA for Noviciado Lampa chemical plant and environmental management of Sodium Cyanide transport II–VI Region.</div>
+                            </div>
+                        </div>
+
+                        <!-- Terminal -->
+                        <div class="dashboard-card bg-black/50 overflow-hidden no-print">
+                            <div class="px-4 py-2 bg-slate-900 border-b border-slate-700 flex justify-between items-center">
+                                <div class="flex gap-1.5">
+                                    <span class="w-2.5 h-2.5 bg-red-500/60 rounded-full"></span>
+                                    <span class="w-2.5 h-2.5 bg-yellow-500/60 rounded-full"></span>
+                                    <span class="w-2.5 h-2.5 bg-green-500/60 rounded-full"></span>
+                                </div>
+                                <span class="text-[9px] mono text-slate-500">aws_operational_resilience.py</span>
+                            </div>
+                            <div class="p-4 mono text-[10px] text-green-400 leading-relaxed">
+<pre>def deploy_resilience(engineer: str) -> str:
+    platform.apply_guardrails("AWS_ControlTower")
+    platform.configure_scps(repos=90, region="multi-ou")
+    bot_fleet.start(units=18, task="Automate_COMPIN")
+    drp.validate(rto_target="&lt;4h", tx_weekly="19M+")
+    return f"{engineer}: Operational Continuity Verified ✓"
+
+print(deploy_resilience("Roberto Moreno Araneda"))</pre>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="mt-6 pt-5 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-3 text-[10px] text-slate-600">
+                    <span class="mono">roberto-moreno-araneda · Santiago, Chile · sa-east-1</span>
+                    <span>Updated: May 2026 &nbsp;·&nbsp; Available: July 2026</span>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // CloudWatch Logs Animation
+        const logData = [
+            "&gt; Connecting to sa-east-1...",
+            "&gt; Profile loaded: Roberto Moreno Araneda",
+            "&gt; Lambda functions: 1,824 active",
+            "&gt; APIs monitored: 82 (76M req/month)",
+            "&gt; DRP Status: Healthy — RTO &lt;4h",
+            "&gt; RPA Fleet: 18/18 operational bots",
+            "&gt; NZQA Level 7: Completed",
+            "&gt; System stable. Ready to export ✓"
+        ];
+
+        let i = 0;
+        function updateLogs() {
+            if (i < logData.length) {
+                const box = document.getElementById('log-box');
+                const line = document.createElement('div');
+                line.className = "mb-1 opacity-0 transition-opacity duration-700";
+                line.innerHTML = logData[i];
+                box.appendChild(line);
+                requestAnimationFrame(() => setTimeout(() => line.classList.remove('opacity-0'), 30));
+                i++;
+                setTimeout(updateLogs, 1800);
+            }
+        }
+        window.addEventListener('load', updateLogs);
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('open');
+        }
+
+        // Scroll Animations with Intersection Observer
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animated');
+                    
+                    // Animate skill progress bars
+                    if (entry.target.classList.contains('skill-progress-fill')) {
+                        setTimeout(() => {
+                            entry.target.classList.add('animated');
+                        }, 200);
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements
+        document.addEventListener('DOMContentLoaded', () => {
+            // Observe scroll animations
+            document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                observer.observe(el);
+            });
+
+            // Observe skill progress bars
+            document.querySelectorAll('.skill-progress-fill').forEach(el => {
+                observer.observe(el);
+            });
+
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        });
+
+        // PDF Export - Optimized version
+        async function exportToPDF() {
+            const btn = document.getElementById('pdfBtn');
+            const original = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span class="hidden sm:inline">GENERATING...</span>';
+            btn.disabled = true;
+
+            try {
+                // Use the simpler v2.0 for PDF export
+                const useV2 = confirm('Para mejor calidad de PDF, ¿quieres usar la versión simplificada (v2.0)?\n\nSÍ = Versión simple (mejor PDF)\nNO = Versión actual (con animaciones)');
+                
+                if (useV2) {
+                    // Redirect to v2.0 and trigger export there
+                    window.location.href = 'cv_interactive_en.html';
+                    return;
+                }
+
+                const element = document.getElementById('cv-capture');
+                
+                // Temporarily switch to print-friendly styles
+                document.body.classList.add('print-mode');
+                
+                // Hide mobile menu if open
+                const mobileMenu = document.getElementById('mobileMenu');
+                const mobileMenuWasOpen = mobileMenu.classList.contains('open');
+                if (mobileMenuWasOpen) {
+                    mobileMenu.classList.remove('open');
+                }
+                
+                // Force all animations to complete
+                document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                    el.classList.add('animated');
+                    el.style.opacity = '1';
+                    el.style.transform = 'none';
+                });
+                
+                document.querySelectorAll('.skill-progress-fill').forEach(el => {
+                    el.classList.add('animated');
+                    const progress = el.getAttribute('data-progress');
+                    if (progress) {
+                        el.style.width = progress + '%';
+                    }
+                });
+                
+                // Wait for styles to apply
+                await new Promise(resolve => setTimeout(resolve, 300));
+                
+                const opt = {
+                    margin: [8, 8, 8, 8],
+                    filename: 'Roberto_Moreno_Araneda_Resume_v3.pdf',
+                    image: { type: 'jpeg', quality: 0.95 },
+                    html2canvas: {
+                        scale: 1.5,
+                        useCORS: true,
+                        backgroundColor: '#ffffff',
+                        logging: false,
+                        width: 900,
+                        windowWidth: 900,
+                        scrollY: 0,
+                        scrollX: 0
+                    },
+                    jsPDF: { 
+                        unit: 'mm', 
+                        format: 'a4', 
+                        orientation: 'portrait',
+                        compress: true
+                    },
+                    pagebreak: { 
+                        mode: ['avoid-all', 'css'],
+                        avoid: ['.dashboard-card', '.timeline-item', '.cert-card']
+                    }
+                };
+
+                await html2pdf().set(opt).from(element).save();
+                btn.innerHTML = '<i class="fas fa-check"></i> <span class="hidden sm:inline">DOWNLOADED</span>';
+            } catch (e) {
+                btn.innerHTML = '<i class="fas fa-times"></i> ERROR';
+                console.error('PDF generation error:', e);
+                alert('Error generando PDF. Intenta usar la versión v2.0 (cv_interactive_en.html) para mejor resultado.');
+            } finally {
+                document.body.classList.remove('print-mode');
+                setTimeout(() => { btn.innerHTML = original; btn.disabled = false; }, 3000);
+            }
+        }
+    </script>
+</body>
+</html>
