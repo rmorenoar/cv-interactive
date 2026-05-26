@@ -706,6 +706,15 @@ function createChatWidget() {
   });
 
 
+  // ============================================================
+  // API CONFIGURATION
+  // ============================================================
+  // Set this to your API Gateway URL after deployment.
+  // If empty or null, the widget uses local matching (no audio).
+  const ARIA_API_URL = window.ARIA_API_URL || null;
+  // Example: "https://abc123.execute-api.ap-southeast-2.amazonaws.com/dev/chat"
+
+
   // Chat functions
   function sendMessage(text) {
     addUserMessage(text);
@@ -719,13 +728,57 @@ function createChatWidget() {
     messagesEl.appendChild(typing);
     messagesEl.scrollTop = messagesEl.scrollHeight;
 
-    // Simulate thinking delay (300-800ms)
-    const delay = 300 + Math.random() * 500;
-    setTimeout(() => {
-      typing.remove();
-      const response = getResponse(text);
-      addBotMessage(response);
-    }, delay);
+    if (ARIA_API_URL) {
+      // API mode: call backend for Bedrock + Polly audio
+      fetchApiResponse(text).then(result => {
+        typing.remove();
+        addBotMessage(result.text);
+        if (result.audio) {
+          playAudio(result.audio);
+        }
+      }).catch(() => {
+        // Fallback to local matching if API fails
+        typing.remove();
+        const response = getResponse(text);
+        addBotMessage(response);
+      });
+    } else {
+      // Local mode: matching only, no audio
+      const delay = 300 + Math.random() * 500;
+      setTimeout(() => {
+        typing.remove();
+        const response = getResponse(text);
+        addBotMessage(response);
+      }, delay);
+    }
+  }
+
+  async function fetchApiResponse(text) {
+    const response = await fetch(ARIA_API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: text }),
+    });
+    if (!response.ok) throw new Error('API error');
+    return await response.json();
+  }
+
+  function playAudio(base64Audio) {
+    try {
+      const audioData = atob(base64Audio);
+      const arrayBuffer = new ArrayBuffer(audioData.length);
+      const view = new Uint8Array(arrayBuffer);
+      for (let i = 0; i < audioData.length; i++) {
+        view[i] = audioData.charCodeAt(i);
+      }
+      const blob = new Blob([arrayBuffer], { type: 'audio/mpeg' });
+      const url = URL.createObjectURL(blob);
+      const audio = new Audio(url);
+      audio.play().catch(() => {});
+      audio.onended = () => URL.revokeObjectURL(url);
+    } catch (e) {
+      // Silent fail — audio is optional
+    }
   }
 
   function addUserMessage(text) {
