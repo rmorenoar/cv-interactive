@@ -710,9 +710,11 @@ function createChatWidget() {
   // API CONFIGURATION
   // ============================================================
   // Set this to your API Gateway URL after deployment.
-  // If empty or null, the widget uses local matching (no audio).
+  // If empty or null, the widget uses local matching (no audio API fallback).
   const ARIA_API_URL = window.ARIA_API_URL || null;
-  // Example: "https://abc123.execute-api.ap-southeast-2.amazonaws.com/dev/chat"
+
+  // S3 bucket URL for pre-generated Polly Aria audio (public)
+  const ARIA_AUDIO_BASE_URL = "https://aria-audio-nz.s3.ap-southeast-2.amazonaws.com";
 
 
   // Chat functions
@@ -728,27 +730,42 @@ function createChatWidget() {
     messagesEl.appendChild(typing);
     messagesEl.scrollTop = messagesEl.scrollHeight;
 
-    if (ARIA_API_URL) {
-      // API mode: call backend for Bedrock + Polly audio
+    // Try local matching first (instant)
+    const lang = detectLanguage(text);
+    const match = findBestMatch(text);
+
+    if (match) {
+      // Local match found — instant text + fetch audio from S3
+      typing.remove();
+      const response = lang === 'es' ? match.answer_es : match.answer_en;
+      addBotMessage(response);
+      // Load and play pre-generated Aria NZ audio from S3
+      playFromS3(match.id);
+    } else if (ARIA_API_URL) {
+      // No local match — call Bedrock API
       fetchApiResponse(text).then(result => {
         typing.remove();
         addBotMessage(result.text);
         if (result.audio) {
-          playAudio(result.audio);
+          playBase64Audio(result.audio);
+        } else {
+          // Fallback: browser synthetic voice
+          speakWithBrowser(result.text);
         }
       }).catch(() => {
-        // Fallback to local matching if API fails
         typing.remove();
         const response = getResponse(text);
         addBotMessage(response);
+        speakWithBrowser(response);
       });
     } else {
-      // Local mode: matching only, no audio
+      // No API configured — local match fallback with browser voice
       const delay = 300 + Math.random() * 500;
       setTimeout(() => {
         typing.remove();
         const response = getResponse(text);
         addBotMessage(response);
+        speakWithBrowser(response);
       }, delay);
     }
   }
@@ -763,7 +780,17 @@ function createChatWidget() {
     return await response.json();
   }
 
-  function playAudio(base64Audio) {
+  function playFromS3(questionId) {
+    try {
+      const url = `${ARIA_AUDIO_BASE_URL}/${questionId}.mp3`;
+      const audio = new Audio(url);
+      audio.play().catch(() => {});
+    } catch (e) {
+      // Silent fail
+    }
+  }
+
+  function playBase64Audio(base64Audio) {
     try {
       const audioData = atob(base64Audio);
       const arrayBuffer = new ArrayBuffer(audioData.length);
@@ -777,7 +804,20 @@ function createChatWidget() {
       audio.play().catch(() => {});
       audio.onended = () => URL.revokeObjectURL(url);
     } catch (e) {
-      // Silent fail — audio is optional
+      // Silent fail
+    }
+  }
+
+  function speakWithBrowser(text) {
+    try {
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-NZ';
+        utterance.rate = 0.95;
+        speechSynthesis.speak(utterance);
+      }
+    } catch (e) {
+      // Silent fail
     }
   }
 
