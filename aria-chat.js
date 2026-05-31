@@ -249,8 +249,8 @@ const ARIA_KB = {
     {
       id: "no_aws_cert",
       triggers: ["no certification","why no cert","aws certification","certificacion aws"],
-      answer_en: "The main reason is time \u2014 the current work pace leaves little room. He's at 65% completion on AWS Skill Builder and expects to certify by June 2026. But he has 6 years of real production experience managing 1,800+ Lambda functions.",
-      answer_es: "La raz\u00f3n principal es tiempo. Est\u00e1 al 65% en AWS Skill Builder y espera certificarse en junio 2026. Pero tiene 6 a\u00f1os de experiencia real en producci\u00f3n."
+      answer_en: "The workload managing national-scale infrastructure has been intense, and Roberto believes in life balance. Instead of a formal course, he built his own agentic bootcamp, learning by building real projects with AI. As he puts it: not even the Bible has as many pages as the Well-Architected Framework. His real proof is 6 years running 1,800 Lambda functions in production.",
+      answer_es: "La carga laboral administrando infraestructura a escala nacional ha sido extenuante, y Roberto cree en el balance de vida. En vez de un curso formal, creo su propio bootcamp agentico. Como el dice: ni la Biblia tiene tantas hojas como el manual de Well-Architected. Su prueba real son 6 anos con 1,800 funciones Lambda en produccion."
     },
     {
       id: "serverless",
@@ -300,17 +300,82 @@ const ARIA_KB = {
       triggers: ["questions for us","any questions","preguntas para nosotros"],
       answer_en: "Roberto typically asks: What is the biggest technical challenge you face today and what would you like to solve in the next 6 months?",
       answer_es: "Roberto suele preguntar: \u00bfCu\u00e1l es el mayor desaf\u00edo t\u00e9cnico que enfrentan hoy y qu\u00e9 les gustar\u00eda resolver en los pr\u00f3ximos 6 meses?"
+    },
+
+    // === CONVERSATIONAL RESPONSES ===
+    {
+      id: "greeting",
+      triggers: ["hello","hi","hey","good morning","good afternoon","good evening","howdy","hola","buenas","buenos dias","buenas tardes","que tal","kia ora"],
+      answer_en: "Kia ora! Good to have you here. I'm Aria, Roberto's AI portfolio assistant. How can I help you today?",
+      answer_es: "Hola! Que gusto tenerte aqui. Soy Aria, la asistente de portafolio de Roberto. En que te puedo ayudar?"
+    },
+    {
+      id: "how_are_you",
+      triggers: ["how are you","how's it going","what's up","como estas","como andas","que onda","como va","todo bien"],
+      answer_en: "All good on my end, thanks for asking! I'm here and ready to chat. Are you looking into Roberto's experience, or is there something specific I can help with?",
+      answer_es: "Todo bien por aca, gracias! Soy Aria, lista para ayudarte. Que te gustaria saber sobre Roberto?"
+    },
+    {
+      id: "thanks",
+      triggers: ["thanks","thank you","cheers","ta","appreciated","gracias","muchas gracias","te agradezco"],
+      answer_en: "You're welcome! Anything else I can help with?",
+      answer_es: "De nada! Algo mas en que pueda ayudarte?"
+    },
+    {
+      id: "who_are_you",
+      triggers: ["who are you","what are you","are you a bot","are you real","are you ai","what is this","quien eres","que eres","eres un bot"],
+      answer_en: "I'm Aria, an AI assistant Roberto built using Amazon Bedrock. I'm one of his portfolio projects, along with Kaitiaki, a DevSecOps platform. Think of me as a smart way to learn about Roberto before deciding if you'd like to chat with him directly.",
+      answer_es: "Soy Aria, una asistente de IA que Roberto construyo con Amazon Bedrock. Soy uno de sus proyectos de portafolio, junto con Kaitiaki. Piensa en mi como una forma inteligente de conocer a Roberto antes de hablar con el directamente."
+    },
+    {
+      id: "bye",
+      triggers: ["bye","goodbye","see you","take care","gotta go","that's all","chao","adios","nos vemos","hasta luego"],
+      answer_en: "Nga mihi! Thanks for your time. If you'd like to connect with Roberto directly, reach out to roberto.moreno.a@gmail.com. Have a great day!",
+      answer_es: "Nga mihi! Gracias por tu tiempo. Si quieres conectar con Roberto directamente, escribele a roberto.moreno.a@gmail.com. Que te vaya bien!"
+    },
+    {
+      id: "impressive",
+      triggers: ["impressive","wow","amazing","great","cool","nice","interesting","impresionante","increible","genial"],
+      answer_en: "Glad you think so! Roberto's track record speaks for itself. Would you like to dive deeper into any area, or perhaps schedule a direct conversation with him?",
+      answer_es: "Me alegra que pienses eso! El historial de Roberto habla por si solo. Quieres profundizar en alguna area, o agendar una conversacion directa con el?"
+    },
+    {
+      id: "current_learning",
+      triggers: ["what are you learning","current projects","multi-cloud","clickhouse","grafana","cloudflare","open source","environmental"],
+      answer_en: "Right now Roberto is working on multi-cloud integrations: ClickHouse Cloud, Grafana Cloud, Cloudflare, and AWS together for an open-source environmental project that uses machine learning to save lives. He's not locked into a single cloud.",
+      answer_es: "Actualmente Roberto trabaja en integraciones multi-cloud: ClickHouse Cloud, Grafana Cloud, Cloudflare y AWS para un proyecto open source medioambiental que usa machine learning para salvar vidas."
     }
   ]
 };
 
 
 // ============================================================
-// MATCHING ENGINE
+// MATCHING ENGINE - Now calls Bedrock via API Gateway
 // ============================================================
+const ARIA_API_URL = "https://87kqwpwsvj.execute-api.ap-southeast-2.amazonaws.com/prod/chat";
+
 function detectLanguage(text) {
   const esIndicators = /\b(hola|que|como|donde|cuando|puede|tiene|sobre|experiencia|trabajo|cuanto|por que|cual)\b/i;
   return esIndicators.test(text) ? 'es' : 'en';
+}
+
+async function getResponse(userInput) {
+  try {
+    const response = await fetch(ARIA_API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: userInput })
+    });
+    
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    
+    const data = await response.json();
+    return data.response || "I'm having trouble connecting. Please try again.";
+  } catch (error) {
+    console.error('Aria API error:', error);
+    // Fallback to local matching if API fails
+    return getResponseLocal(userInput);
+  }
 }
 
 function normalizeText(text) {
@@ -331,11 +396,9 @@ function findBestMatch(userInput) {
     let score = 0;
     for (const trigger of q.triggers) {
       const normTrigger = normalizeText(trigger);
-      // Exact trigger match
       if (normalized.includes(normTrigger)) {
         score = Math.max(score, normTrigger.split(' ').length * 10);
       }
-      // Word-level matching
       const triggerWords = normTrigger.split(' ');
       let wordMatches = 0;
       for (const tw of triggerWords) {
@@ -355,7 +418,7 @@ function findBestMatch(userInput) {
   return bestScore >= 3 ? bestMatch : null;
 }
 
-function getResponse(userInput) {
+function getResponseLocal(userInput) {
   const lang = detectLanguage(userInput);
   const match = findBestMatch(userInput);
   
@@ -706,6 +769,16 @@ function createChatWidget() {
   });
 
 
+  // ============================================================
+  // API CONFIGURATION
+  // ============================================================
+  // Set this to your API Gateway URL for Bedrock-powered responses.
+  const ARIA_API_URL = "https://87kqwpwsvj.execute-api.ap-southeast-2.amazonaws.com/prod/chat";
+
+  // S3 bucket URL for pre-generated Polly Aria audio (public)
+  const ARIA_AUDIO_BASE_URL = "https://aria-audio-nz.s3.ap-southeast-2.amazonaws.com";
+
+
   // Chat functions
   function sendMessage(text) {
     addUserMessage(text);
@@ -719,13 +792,93 @@ function createChatWidget() {
     messagesEl.appendChild(typing);
     messagesEl.scrollTop = messagesEl.scrollHeight;
 
-    // Simulate thinking delay (300-800ms)
-    const delay = 300 + Math.random() * 500;
-    setTimeout(() => {
-      typing.remove();
-      const response = getResponse(text);
-      addBotMessage(response);
-    }, delay);
+    // Always call Bedrock API for natural, personality-driven responses
+    if (ARIA_API_URL) {
+      fetchApiResponse(text).then(result => {
+        typing.remove();
+        const responseText = result.response || result.text || "Sorry, I couldn't process that.";
+        addBotMessage(responseText);
+        if (result.audio) {
+          playBase64Audio(result.audio);
+        } else {
+          speakWithBrowser(responseText);
+        }
+      }).catch(() => {
+        // Fallback to local matching if API fails
+        typing.remove();
+        const lang = detectLanguage(text);
+        const match = findBestMatch(text);
+        const response = match 
+          ? (lang === 'es' ? match.answer_es : match.answer_en)
+          : getResponseLocal(text);
+        addBotMessage(response);
+        speakWithBrowser(response);
+      });
+    } else {
+      // No API configured — local match fallback with browser voice
+      const delay = 300 + Math.random() * 500;
+      setTimeout(() => {
+        typing.remove();
+        const lang = detectLanguage(text);
+        const match = findBestMatch(text);
+        const response = match 
+          ? (lang === 'es' ? match.answer_es : match.answer_en)
+          : getResponseLocal(text);
+        addBotMessage(response);
+        speakWithBrowser(response);
+      }, delay);
+    }
+  }
+
+  async function fetchApiResponse(text) {
+    const response = await fetch(ARIA_API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: text }),
+    });
+    if (!response.ok) throw new Error('API error');
+    return await response.json();
+  }
+
+  function playFromS3(questionId) {
+    try {
+      const url = `${ARIA_AUDIO_BASE_URL}/${questionId}.mp3`;
+      const audio = new Audio(url);
+      audio.play().catch(() => {});
+    } catch (e) {
+      // Silent fail
+    }
+  }
+
+  function playBase64Audio(base64Audio) {
+    try {
+      const audioData = atob(base64Audio);
+      const arrayBuffer = new ArrayBuffer(audioData.length);
+      const view = new Uint8Array(arrayBuffer);
+      for (let i = 0; i < audioData.length; i++) {
+        view[i] = audioData.charCodeAt(i);
+      }
+      const blob = new Blob([arrayBuffer], { type: 'audio/mpeg' });
+      const url = URL.createObjectURL(blob);
+      const audio = new Audio(url);
+      audio.play().catch(() => {});
+      audio.onended = () => URL.revokeObjectURL(url);
+    } catch (e) {
+      // Silent fail
+    }
+  }
+
+  function speakWithBrowser(text) {
+    try {
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-NZ';
+        utterance.rate = 0.95;
+        speechSynthesis.speak(utterance);
+      }
+    } catch (e) {
+      // Silent fail
+    }
   }
 
   function addUserMessage(text) {
