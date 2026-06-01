@@ -47,7 +47,7 @@ function initRecognition() {
   const rec = new SpeechRecognition();
   rec.continuous = true;
   rec.interimResults = true;
-  rec.lang = 'en-NZ';
+  rec.lang = 'en-US';
   rec.maxAlternatives = 1;
 
   rec.onstart = () => {
@@ -55,9 +55,15 @@ function initRecognition() {
     isListening = true;
   };
 
+  rec.onaudiostart = () => console.log('[Aria] 🎙️ Audio capture started');
+  rec.onsoundstart = () => console.log('[Aria] 🔊 Sound detected');
+  rec.onspeechstart = () => console.log('[Aria] 🗣️ Speech detected!');
+  rec.onspeechend = () => console.log('[Aria] Speech ended');
+
   rec.onresult = (event) => {
     const result = event.results[event.results.length - 1];
     const transcript = result[0].transcript;
+    console.log('[Aria] Heard:', transcript, '| final:', result.isFinal);
     updateTranscript(transcript, result.isFinal);
     if (result.isFinal && transcript.trim()) {
       handleUserSpeech(transcript.trim());
