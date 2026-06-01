@@ -45,10 +45,15 @@ function initRecognition() {
   if (!SpeechRecognition) return null;
 
   const rec = new SpeechRecognition();
-  rec.continuous = false;
+  rec.continuous = true;
   rec.interimResults = true;
   rec.lang = 'en-NZ';
   rec.maxAlternatives = 1;
+
+  rec.onstart = () => {
+    console.log('[Aria] Recognition started');
+    isListening = true;
+  };
 
   rec.onresult = (event) => {
     const result = event.results[event.results.length - 1];
@@ -60,20 +65,27 @@ function initRecognition() {
   };
 
   rec.onend = () => {
+    console.log('[Aria] Recognition ended. callActive:', callActive, 'speaking:', isAriaSpeaking);
+    isListening = false;
+    // Auto-restart listening if call is active and Aria isn't speaking
     if (callActive && !isAriaSpeaking) {
-      // Auto-restart listening after silence
       setTimeout(() => {
         if (callActive && !isAriaSpeaking) startListening();
-      }, 500);
+      }, 300);
     }
   };
 
   rec.onerror = (event) => {
-    if (event.error === 'no-speech') {
-      // Normal — just restart
-      if (callActive && !isAriaSpeaking) startListening();
-    } else if (event.error !== 'aborted') {
-      console.warn('Speech recognition error:', event.error);
+    console.warn('[Aria] Recognition error:', event.error);
+    isListening = false;
+    if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+      updateStatus('error');
+      const el = document.getElementById('aria-call-status');
+      if (el) el.textContent = '🚫 Microphone blocked. Allow mic access and reload.';
+    } else if (event.error === 'no-speech' || event.error === 'aborted') {
+      // Normal — onend will handle restart
+    } else {
+      updateStatus('error');
     }
   };
 
@@ -81,20 +93,20 @@ function initRecognition() {
 }
 
 function startListening() {
-  if (!recognition || isAriaSpeaking) return;
+  if (!recognition || isAriaSpeaking || isListening) return;
   try {
-    isListening = true;
     recognition.start();
     updateStatus('listening');
   } catch (e) {
-    // Already started
+    console.warn('[Aria] start() failed:', e.message);
+    // If already started, that's fine
   }
 }
 
 function stopListening() {
   if (!recognition) return;
-  isListening = false;
   try { recognition.stop(); } catch(e) {}
+  isListening = false;
 }
 
 // Handle user's spoken input
@@ -129,10 +141,13 @@ async function handleUserSpeech(text) {
 function speakAria(text) {
   return new Promise((resolve) => {
     isAriaSpeaking = true;
+    stopListening();  // Stop mic so Aria doesn't hear herself
+    speechSynth.cancel();  // Clear any queued speech
     updateStatus('speaking');
 
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.voice = ariaVoice;
+    utterance.lang = ariaVoice ? ariaVoice.lang : 'en-NZ';
     utterance.rate = 0.95;
     utterance.pitch = 1.05;
     utterance.volume = 1.0;
@@ -140,8 +155,13 @@ function speakAria(text) {
     utterance.onend = () => {
       isAriaSpeaking = false;
       if (callActive) {
-        updateStatus('listening');
-        startListening();
+        // Small delay so the mic doesn't catch the tail of Aria's voice
+        setTimeout(() => {
+          if (callActive && !isAriaSpeaking) {
+            updateStatus('listening');
+            startListening();
+          }
+        }, 400);
       }
       resolve();
     };
@@ -158,14 +178,26 @@ function speakAria(text) {
 
 // Start call
 async function startCall() {
-  callActive = true;
-  callDuration = 0;
   recognition = initRecognition();
 
   if (!recognition) {
-    alert('Your browser does not support speech recognition. Try Chrome or Edge.');
+    alert('Your browser does not support speech recognition. Please use Chrome or Edge.');
     return;
   }
+
+  // Request microphone permission explicitly first
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    // Stop the stream — we only needed the permission. Recognition uses its own.
+    stream.getTracks().forEach(track => track.stop());
+  } catch (e) {
+    console.error('[Aria] Mic permission denied:', e);
+    alert('Aria needs microphone access to talk. Please allow microphone permission and try again.');
+    return;
+  }
+
+  callActive = true;
+  callDuration = 0;
 
   // Load voices
   ariaVoice = findAriaVoice();
@@ -176,7 +208,7 @@ async function startCall() {
   showCallUI();
   startTimer();
 
-  // Aria greets first
+  // Aria greets first, then starts listening (handled in speakAria.onend)
   const greeting = "Kia ora! I'm Aria, Roberto's AI assistant. How can I help you today?";
   addToLog('Aria', greeting);
   await speakAria(greeting);
@@ -216,10 +248,11 @@ function updateStatus(status) {
   const el = document.getElementById('aria-call-status');
   if (!el) return;
   const labels = {
-    listening: '🎤 Listening...',
+    listening: '🎤 Listening... (speak now)',
     thinking: '💭 Thinking...',
     speaking: '🔊 Aria is speaking...',
-    idle: '⏸ Ready'
+    error: '⚠️ Something went wrong',
+    idle: '⏸ Muted'
   };
   el.textContent = labels[status] || '';
   el.className = `aria-call-status ${status}`;
