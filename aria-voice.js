@@ -18,6 +18,10 @@ let ariaVoice = null;
 let callActive = false;
 let callDuration = 0;
 let callTimer = null;
+let micStream = null;
+let audioContext = null;
+let analyser = null;
+let levelRAF = null;
 
 // Find best Aria-like voice (NZ/AU/UK English female)
 function findAriaVoice() {
@@ -182,6 +186,40 @@ function speakAria(text) {
   });
 }
 
+// Live volume meter — shows if the mic is actually capturing sound
+function setupVolumeMeter(stream) {
+  try {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const source = audioContext.createMediaStreamSource(stream);
+    analyser = audioContext.createAnalyser();
+    analyser.fftSize = 256;
+    source.connect(analyser);
+    const data = new Uint8Array(analyser.frequencyBinCount);
+
+    function tick() {
+      analyser.getByteFrequencyData(data);
+      let sum = 0;
+      for (let i = 0; i < data.length; i++) sum += data[i];
+      const avg = sum / data.length;
+      const pct = Math.min(100, Math.round((avg / 128) * 100));
+      const bar = document.getElementById('aria-mic-level-bar');
+      if (bar) bar.style.width = pct + '%';
+      levelRAF = requestAnimationFrame(tick);
+    }
+    tick();
+    console.log('[Aria] Volume meter active');
+  } catch (e) {
+    console.warn('[Aria] Could not set up volume meter:', e);
+  }
+}
+
+function stopVolumeMeter() {
+  if (levelRAF) cancelAnimationFrame(levelRAF);
+  if (micStream) micStream.getTracks().forEach(t => t.stop());
+  if (audioContext) audioContext.close().catch(() => {});
+  micStream = null; audioContext = null; analyser = null; levelRAF = null;
+}
+
 // Start call
 async function startCall() {
   recognition = initRecognition();
@@ -193,9 +231,9 @@ async function startCall() {
 
   // Request microphone permission explicitly first
   try {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    // Stop the stream — we only needed the permission. Recognition uses its own.
-    stream.getTracks().forEach(track => track.stop());
+    micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    // Set up a live volume meter so we can SEE if the mic captures sound
+    setupVolumeMeter(micStream);
   } catch (e) {
     console.error('[Aria] Mic permission denied:', e);
     alert('Aria needs microphone access to talk. Please allow microphone permission and try again.');
@@ -224,6 +262,7 @@ async function startCall() {
 function endCall() {
   callActive = false;
   stopListening();
+  stopVolumeMeter();
   speechSynth.cancel();
   clearInterval(callTimer);
   isAriaSpeaking = false;
@@ -299,6 +338,7 @@ function showCallUI() {
       <button id="aria-call-end" title="End call">✕</button>
     </div>
     <div id="aria-call-status" class="aria-call-status listening">🎤 Listening...</div>
+    <div class="aria-mic-level"><div id="aria-mic-level-bar"></div></div>
     <div id="aria-call-transcript" class="aria-call-transcript"></div>
     <div id="aria-call-log" class="aria-call-log"></div>
     <div class="aria-call-controls">
@@ -460,6 +500,20 @@ function injectStyles() {
       font-style: italic;
       min-height: 24px;
       font-family: 'Inter', sans-serif;
+    }
+
+    .aria-mic-level {
+      height: 6px;
+      margin: 0 16px 4px;
+      background: #1e293b;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    #aria-mic-level-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #22c55e, #4ade80);
+      transition: width 0.08s linear;
     }
 
     .aria-call-log {
