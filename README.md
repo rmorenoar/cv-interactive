@@ -61,7 +61,7 @@ Industrial Execution Engineer with **18+ years** of experience in technical lead
 
 **Position:** DevOps Engineer / Infrastructure Lead / SRE  
 **Location:** New Zealand (Open to relocation)  
-**Availability:** July 2026  
+**Availability:** September 2026  
 **Visa Status:** NZQA Level 7 assessment in progress  
 **English:** IELTS 6.5 target  
 

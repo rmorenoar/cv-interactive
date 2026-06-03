@@ -63,8 +63,8 @@ const ARIA_KB = {
     {
       id: "availability",
       triggers: ["when can he start","availability","start date","disponibilidad","cuando puede empezar"],
-      answer_en: "Roberto is available from July 2026. He requires AEWV sponsorship \u2014 DevOps Engineer is on the Green List Tier 1. His NZQA Level 7 qualification is already recognized.",
-      answer_es: "Roberto est\u00e1 disponible desde julio 2026. Requiere sponsorship AEWV \u2014 DevOps Engineer est\u00e1 en el Green List Tier 1. Su t\u00edtulo NZQA Level 7 ya est\u00e1 reconocido."
+      answer_en: "Roberto is available from September 2026. He requires AEWV sponsorship \u2014 DevOps Engineer is on the Green List Tier 1. His NZQA Level 7 qualification is already recognized.",
+      answer_es: "Roberto est\u00e1 disponible desde septiembre 2026. Requiere sponsorship AEWV \u2014 DevOps Engineer est\u00e1 en el Green List Tier 1. Su t\u00edtulo NZQA Level 7 ya est\u00e1 reconocido."
     },
 
     {
